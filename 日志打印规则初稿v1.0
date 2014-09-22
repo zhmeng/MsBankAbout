@@ -1,0 +1,29 @@
+play framework 日志底层使用的为：slf4j 
+日志等级包括 ,按等级排序：
+	ERROR - 运行时的错误，或者不被希望的条件。Runtime errors, or unexpected conditions.
+	WARN - 不至于产生错误的，但自认为应该发出警告的。Use of deprecated APIs, poor use of API, ‘almost’ errors, other runtime situations that are undesirable or unexpected, but not necessarily “wrong”.
+	INFO - 一些，有助于查看系统或者功能状况的。Interesting runtime events such as application startup and shutdown.
+	DEBUG - 系统工作流详细的信息。Detailed information on the flow through the system.
+	TRACE - 最详细的信息。Most detailed information.
+	一般常用：ERROR WARN INFO DEBUG
+使用示例：
+	class A{
+		private static final ALogger logger = Logger.of(Application.class);
+		public void method(){
+			logger.debug("debug......");
+		}
+	}
+关于日志打印：
+	1、项目线上稳定后，日志等级为INFO。
+	2、项目测试环境，日志等级为DEBUG。
+	3、关于日志在项目过程中的打印规则：
+		1) 为了方便调试来跟踪数据的地方，采用：logger.debug
+		2) 
+		  关于能够在生产排查问题根源的地方，尤其和外部如：socket接口，webservice对接时.
+		  在生产等级设置为INFO时，DEBUG的信息都消失。所以对于打印的信息，要判断下是该INFO还是DEBUG.
+		  采用：logger.info.
+		3) 关于在项目中出现异常，但是对正常逻辑未产生影响的地方。采用logger.warn.
+		4) 系统中已经产生错误了。已经对正常逻辑产生影响了。采用 logger.error.
+		   logger.error 地方，尽量做到有相应的应对措施。
+	4、在项目开发中，注意 try {...} catch(Exception ){} 将exception 丢掉的地方，在catch尽量做到有对应的logger。
+	
